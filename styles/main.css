@@ -3029,7 +3029,7 @@ body {
 }
 
 .separator.separator-primary {
-  background-color: #378C3F;
+  background-color: #3c75df;
 }
 
 .nav-pills .nav-item .nav-link {
@@ -3470,11 +3470,11 @@ body {
 }
 
 .dropdown-menu.dropdown-primary {
-  background-color: #33813a;
+  background-color: #4853b6;
 }
 
 .dropdown-menu.dropdown-primary:before {
-  color: #33813a;
+  color: #205ed3;
 }
 
 .dropdown-menu.dropdown-primary .dropdown-header:not([href]):not([tabindex]) {
@@ -4566,7 +4566,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .modal.modal-success .modal-content {
-  background-color: #18ce0f;
+  background-color: #0f88ce;
   color: #FFFFFF;
 }
 
@@ -4629,7 +4629,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .card[data-background-color="orange"] {
-  background-color: #376d8c;
+  background-color: #d45907;
 }
 
 .card[data-background-color="red"] {
@@ -4922,8 +4922,8 @@ Created using IcoMoon - icomoon.io
   /* For Safari 5.1 to 6.0 */
   /* For Opera 11.1 to 12.0 */
   /* For Firefox 3.6 to 15 */
-  background: -webkit-gradient(linear, left bottom, left top, from(rgba(227, 227, 227, 0.26)), to(rgba(55, 140, 63, 0.95)));
-  background: linear-gradient(0deg, rgba(227, 227, 227, 0.26), rgba(55, 140, 63, 0.95));
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(227, 227, 227, 0.26)), to(rgba(53, 84, 223, 0.95)));
+  background: linear-gradient(0deg, rgba(227, 227, 227, 0.26), rgba(73, 71, 218, 0.95));
   /* Standard syntax */
 }
 
