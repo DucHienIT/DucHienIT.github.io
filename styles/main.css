@@ -3084,7 +3084,7 @@ body {
 }
 
 .nav-pills.nav-pills-success .nav-item .nav-link.active, .nav-pills.nav-pills-success .nav-item .nav-link.active:focus, .nav-pills.nav-pills-success .nav-item .nav-link.active:hover {
-  background-color: #223185;
+  background-color: #475fe9;
 }
 
 .nav-pills.nav-pills-warning .nav-item .nav-link.active, .nav-pills.nav-pills-warning .nav-item .nav-link.active:focus, .nav-pills.nav-pills-warning .nav-item .nav-link.active:hover {
@@ -3139,6 +3139,14 @@ body {
 
 .btn-linkedin:hover, .btn-linkedin:focus, .btn-linkedin:active {
   color: #00669c;
+}
+
+.btn-github {
+  color: #8f8f8f;
+}
+
+.btn-youtube {
+  color: #d41e1e;
 }
 
 .nav-tabs {
