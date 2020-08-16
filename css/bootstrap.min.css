@@ -4632,28 +4632,28 @@ button.list-group-item-secondary.active {
 }
 
 .list-group-item-success {
-    color: #155724;
+    color: #0a5688;
     background-color: #c3e6cb
 }
 
 a.list-group-item-success,
 button.list-group-item-success {
-    color: #155724
+    color: #0a5688
 }
 
 a.list-group-item-success:focus,
 a.list-group-item-success:hover,
 button.list-group-item-success:focus,
 button.list-group-item-success:hover {
-    color: #155724;
+    color: #0a5688;
     background-color: #b1dfbb
 }
 
 a.list-group-item-success.active,
 button.list-group-item-success.active {
     color: #fff;
-    background-color: #155724;
-    border-color: #155724
+    background-color: #0a5688;
+    border-color: #0a5688
 }
 
 .list-group-item-info {
