@@ -1,0 +1,4 @@
+function OK()
+{
+    alert("OK");
+}
