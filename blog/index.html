@@ -1,31 +1,72 @@
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="refresh" content="3; url=http://tiennhm.github.io" />
-        <title>Minh Tien's Blog</title>
-    </head>
-    <body>
-        <h1 align="center" id="blog-title" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: xx-large; font-weight: bold; color: crimson;">
-            NGUYỄN HUỲNH MINH TIẾN
-        </h1>
-        <h2 align="center" id="greeting" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size:larger ; color: firebrick;">
-            <blockquote>Chào mừng đến với <u>blog</u> của <i><b>Minh Tiến</b></i>!</blockquote>
-        </h2>
-        <div id="menu" align="center" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: x-large;">
-            <a href="index.html">HOME</a> | 
-            <a href="blog/index.html">BLOG</a> |
-            <a href="cv.html">CV</a>
-        </div>
-        <div id="footer">
-            <code>
-                <pre>
-print("Hello")
-print("Hi")
-                </pre>
-            </code>
-            <p>hello</p><kbd>vietnam</kbd>
-            <samp>a</samp>
-        </div>
-    </body>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="author" content="Tiến, Nguyễn Huỳnh Minh" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="CV, Blog, TienNHM" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script type="text/javascript">
+    function Hello()
+    {
+        alert("Hello!");
+    }
+    </script>
+    <!-- <meta http-equiv="refresh" content="3; url=http://tiennhm.github.io" /> -->
+    <title>Minh Tien's Blog</title>
+</head>
+
+<body>
+    <h1 align="center" id="blog-title"
+        style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: xx-large; font-weight: bold; color: crimson;">
+        NGUYỄN HUỲNH MINH TIẾN
+        <a name="top"></a>
+    </h1>
+    <h2 align="center" id="greeting"
+        style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size:larger ; color: firebrick;">
+        <blockquote>
+            <marquee>
+                Chào mừng đến với <u>blog</u> của <i><b>Minh Tiến</b></i>!
+            </marquee>
+        </blockquote>
+    </h2>
+    <div id="menu" align="center"
+        style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: x-large;">
+        <a href="index.html">HOME</a> |
+        <a href="blog/index.html">BLOG</a> |
+        <a href="cv.html">CV</a>
+    </div>
+    <div id="content">
+        <p>
+            <iframe src="https://www.facebook.com/01.tien" width="100%"></iframe>
+            <br />
+            <a href="mailto:ngotienhoang09@gmail.com?subject=Feedback&body=Hello">Gửi mail</a>
+        </p>
+    </div>
+    <div id="footer" align="center">
+        <form align="left" class="content">
+            User name: <input type="text" name="user-name" />
+            <br />
+            Password: <input type="password" name="password" />
+            <br />
+            Chọn mục:
+            <select name="dropdown">
+                <option value="CV" selected>CV</option>
+                <option value="Blog">Blog</option>
+            </select>
+            <br />
+            Chọn file: <input type="file" accept="*" />
+            <br />
+            Nội dung: <textarea type="text" name="content" rows=5>Nội dung phản hồi...</textarea>
+            <br />
+            <input type="checkbox" value="on" checked> Đồng ý với điều khoản sử dụng.
+            <br />
+            <input type="button" value="OK" onclick="Hello();" name="ok" />
+        </form>
+        <hr />
+        <a href="#top">VỀ ĐẦU TRANG</a>
+    </div>
+</body>
+
 </html>
