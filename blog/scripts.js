@@ -1,4 +1,0 @@
-function OK()
-{
-    alert("OK");
-}
