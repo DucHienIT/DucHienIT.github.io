@@ -70,18 +70,18 @@
 
     .nav-inner {
       max-width: var(--maxw); margin: 0 auto; padding: 16px 24px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
     .logo {
       font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;
-      letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;
+      letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; flex-shrink: 0;
     }
     .logo .dot { color: var(--accent-glow); }
 
     nav.links { display: flex; gap: 28px; }
     nav.links a {
       font-size: 0.9rem; color: var(--text-secondary); font-weight: 500;
-      position: relative; transition: color .2s ease;
+      position: relative; transition: color .2s ease; white-space: nowrap;
     }
     nav.links a::after {
       content: ''; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0;
@@ -89,6 +89,39 @@
     }
     nav.links a:hover, nav.links a.active { color: var(--text-primary); }
     nav.links a.active::after { width: 100%; }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+    /* Language switcher */
+    .lang-switch { position: relative; }
+    .lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary);
+      font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+      padding: 8px 12px; border-radius: 8px; cursor: pointer;
+      transition: border-color .2s ease;
+    }
+    .lang-btn:hover { border-color: var(--accent-glow); }
+    .lang-btn i { width: 16px; height: 16px; }
+    .lang-btn .chev { transition: transform .2s ease; }
+    .lang-switch.open .chev { transform: rotate(180deg); }
+    .lang-menu {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 6px; min-width: 175px; display: none; flex-direction: column; gap: 2px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5); z-index: 120; max-height: 72vh; overflow: auto;
+    }
+    .lang-switch.open .lang-menu { display: flex; }
+    .lang-menu button {
+      display: flex; align-items: center; gap: 10px;
+      background: none; border: none; color: var(--text-secondary);
+      font-family: var(--font-body); font-size: 0.9rem; text-align: left;
+      padding: 9px 12px; border-radius: 7px; cursor: pointer; width: 100%;
+      transition: background .15s ease, color .15s ease;
+    }
+    .lang-menu button:hover { background: var(--bg-primary); color: var(--text-primary); }
+    .lang-menu button.active { color: var(--accent-glow); background: rgba(124,58,237,0.12); }
+    .lang-menu .flag { font-size: 1.1rem; line-height: 1; }
 
     .hamburger {
       display: none; background: none; border: none; color: var(--text-primary);
@@ -117,7 +150,7 @@
     }
     .hero-eyebrow .status {
       width: 8px; height: 8px; border-radius: 50%; background: var(--green);
-      box-shadow: 0 0 10px var(--green); animation: pulse 2s infinite;
+      box-shadow: 0 0 10px var(--green); animation: pulse 2s infinite; flex-shrink: 0;
     }
     @keyframes pulse {
       0%,100% { opacity: 1; } 50% { opacity: 0.4; }
@@ -197,7 +230,6 @@
     /* ---------- ABOUT ---------- */
     .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: start; }
     .about-text p { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 16px; }
-    .about-text strong { color: var(--text-primary); }
 
     .stats { display: grid; gap: 16px; }
     .stat-card {
@@ -224,7 +256,7 @@
       border-color: var(--accent-glow); color: #fff;
       box-shadow: 0 4px 18px rgba(124,58,237,0.25); transform: translateY(-3px);
     }
-    .skill-badge i { width: 18px; height: 18px; color: var(--accent-glow); }
+    .skill-badge i { width: 18px; height: 18px; color: var(--accent-glow); flex-shrink: 0; }
 
     /* ---------- TIMELINE ---------- */
     .timeline { position: relative; padding-left: 32px; }
@@ -388,6 +420,7 @@
     @media (max-width: 420px) {
       .projects-grid { grid-template-columns: 1fr; }
       .container { padding: 0 18px; }
+      .lang-btn { padding: 8px 10px; }
     }
   </style>
 </head>
@@ -399,16 +432,26 @@
       <a href="#hero" class="logo">NDH<span class="dot">.</span></a>
       <div class="nav-overlay" id="navOverlay"></div>
       <nav class="links" id="navLinks">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#education">Education</a>
-        <a href="#contact">Contact</a>
+        <a href="#about" data-i18n="nav_about">About</a>
+        <a href="#skills" data-i18n="nav_skills">Skills</a>
+        <a href="#experience" data-i18n="nav_experience">Experience</a>
+        <a href="#projects" data-i18n="nav_projects">Projects</a>
+        <a href="#education" data-i18n="nav_education">Education</a>
+        <a href="#contact" data-i18n="nav_contact">Contact</a>
       </nav>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <i data-lucide="menu"></i>
-      </button>
+      <div class="nav-right">
+        <div class="lang-switch" id="langSwitch">
+          <button class="lang-btn" id="langBtn" aria-label="Select language">
+            <i data-lucide="globe"></i>
+            <span id="langCurrent">EN</span>
+            <i data-lucide="chevron-down" class="chev"></i>
+          </button>
+          <div class="lang-menu" id="langMenu"></div>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -417,13 +460,13 @@
     <canvas id="particles"></canvas>
     <div class="container">
       <div class="hero-content">
-        <div class="hero-eyebrow"><span class="status"></span> Available for new opportunities</div>
+        <div class="hero-eyebrow"><span class="status"></span> <span data-i18n="hero_status">Available for new opportunities</span></div>
         <h1>Nguyen Duc <span class="grad">Hien</span></h1>
-        <p class="subtitle">Game Developer · Unity · Mobile</p>
-        <p class="tagline">"Building scalable, addictive mobile games — growing toward Lead."</p>
+        <p class="subtitle" data-i18n="hero_subtitle">Game Developer · Unity · Mobile</p>
+        <p class="tagline" data-i18n="hero_tagline">“Building scalable, addictive mobile games — growing toward Lead.”</p>
         <div class="cta-row">
-          <a href="#projects" class="btn btn-primary"><i data-lucide="gamepad-2"></i> View Projects</a>
-          <a href="#contact" class="btn btn-ghost"><i data-lucide="mail"></i> Contact Me</a>
+          <a href="#projects" class="btn btn-primary"><i data-lucide="gamepad-2"></i> <span data-i18n="hero_cta_projects">View Projects</span></a>
+          <a href="#contact" class="btn btn-ghost"><i data-lucide="mail"></i> <span data-i18n="hero_cta_contact">Contact Me</span></a>
         </div>
       </div>
       <div class="avatar-wrap">
@@ -439,26 +482,26 @@
   <section id="about">
     <div class="container">
       <div class="section-head reveal">
-        <div class="kicker">About Me</div>
-        <h2>Crafting games that players keep coming back to</h2>
+        <div class="kicker" data-i18n="about_kicker">About Me</div>
+        <h2 data-i18n="about_title">Crafting games that players keep coming back to</h2>
       </div>
       <div class="about-grid">
         <div class="about-text reveal">
-          <p>I'm a <strong>Game Developer</strong> with 2+ years of professional experience building <strong>Hybrid Casual mobile games</strong> with Unity and C#. My focus is on creating mechanics that are simple, addictive, and scalable.</p>
-          <p>I care about the full lifecycle — from prototyping core gameplay and producing CPI marketing videos, to optimizing performance and shipping on both <strong>Android and iOS</strong>. I work closely with designers, artists, and marketing teams, and I'm growing toward a <strong>Lead</strong> role.</p>
+          <p data-i18n="about_p1">I'm a Game Developer with 2+ years of professional experience building Hybrid Casual mobile games with Unity and C#. My focus is on creating mechanics that are simple, addictive, and scalable.</p>
+          <p data-i18n="about_p2">I care about the full lifecycle — from prototyping core gameplay and producing CPI marketing videos, to optimizing performance and shipping on both Android and iOS. I work closely with designers, artists, and marketing teams, and I'm growing toward a Lead role.</p>
         </div>
         <div class="stats reveal">
           <div class="stat-card">
-            <div class="num">2+ years</div>
-            <div class="label">Professional Experience</div>
+            <div class="num" data-i18n="about_stat1_num">2+ years</div>
+            <div class="label" data-i18n="about_stat1_label">Professional Experience</div>
           </div>
           <div class="stat-card">
             <div class="num">2</div>
-            <div class="label">Games Shipped (Android + iOS)</div>
+            <div class="label" data-i18n="about_stat2_label">Games Shipped (Android + iOS)</div>
           </div>
           <div class="stat-card">
             <div class="num">1</div>
-            <div class="label">Acceleration Program (CrazyLabs)</div>
+            <div class="label" data-i18n="about_stat3_label">Acceleration Program (CrazyLabs)</div>
           </div>
         </div>
       </div>
@@ -469,19 +512,19 @@
   <section id="skills">
     <div class="container">
       <div class="section-head reveal">
-        <div class="kicker">Skills</div>
-        <h2>Tools &amp; technologies I work with</h2>
+        <div class="kicker" data-i18n="skills_kicker">Skills</div>
+        <h2 data-i18n="skills_title">Tools &amp; technologies I work with</h2>
       </div>
       <div class="skills-grid reveal">
         <span class="skill-badge"><i data-lucide="box"></i> Unity</span>
         <span class="skill-badge"><i data-lucide="code-2"></i> C# / OOP</span>
-        <span class="skill-badge"><i data-lucide="layout-template"></i> Design Patterns</span>
-        <span class="skill-badge"><i data-lucide="binary"></i> Data Structures &amp; Algorithms</span>
+        <span class="skill-badge"><i data-lucide="layout-template"></i> <span data-i18n="skill_patterns">Design Patterns</span></span>
+        <span class="skill-badge"><i data-lucide="binary"></i> <span data-i18n="skill_dsa">Data Structures &amp; Algorithms</span></span>
         <span class="skill-badge"><i data-lucide="git-branch"></i> Git</span>
-        <span class="skill-badge"><i data-lucide="sparkles"></i> AI-assisted Coding (Claude)</span>
-        <span class="skill-badge"><i data-lucide="gauge"></i> Mobile Optimization (FPS, Memory, Load Time)</span>
-        <span class="skill-badge"><i data-lucide="wrench"></i> Troubleshooting &amp; Problem Solving</span>
-        <span class="skill-badge"><i data-lucide="smartphone"></i> Android &amp; iOS Deploy</span>
+        <span class="skill-badge"><i data-lucide="sparkles"></i> <span data-i18n="skill_ai">AI-assisted Coding (Claude)</span></span>
+        <span class="skill-badge"><i data-lucide="gauge"></i> <span data-i18n="skill_opt">Mobile Optimization (FPS, Memory, Load Time)</span></span>
+        <span class="skill-badge"><i data-lucide="wrench"></i> <span data-i18n="skill_trouble">Troubleshooting &amp; Problem Solving</span></span>
+        <span class="skill-badge"><i data-lucide="smartphone"></i> <span data-i18n="skill_deploy">Android &amp; iOS Deploy</span></span>
       </div>
     </div>
   </section>
@@ -490,24 +533,24 @@
   <section id="experience">
     <div class="container">
       <div class="section-head reveal">
-        <div class="kicker">Experience</div>
-        <h2>Where I've been building</h2>
+        <div class="kicker" data-i18n="exp_kicker">Experience</div>
+        <h2 data-i18n="exp_title">Where I've been building</h2>
       </div>
       <div class="timeline">
         <div class="tl-item reveal">
           <div class="tl-head">
             <h3>IMBA Games</h3>
-            <span class="badge-present">Present</span>
+            <span class="badge-present" data-i18n="exp_present">Present</span>
           </div>
-          <span class="tl-role">Game Developer</span>
+          <span class="tl-role" data-i18n="exp_role">Game Developer</span>
           <span class="tl-date">· 07/2023 – Present</span>
           <ul class="tl-list">
-            <li>Develop &amp; optimize gameplay features for Hybrid Casual mobile games</li>
-            <li>Independently capture &amp; produce CPI marketing videos for prototype games</li>
-            <li>Design &amp; implement core mechanics: simple, addictive, scalable</li>
-            <li>Build &amp; deploy for Android and iOS</li>
-            <li>Optimize performance: FPS, memory usage, loading time</li>
-            <li>Collaborate with Game Designers, Artists, and Marketing teams</li>
+            <li data-i18n="exp_imba_li1">Develop &amp; optimize gameplay features for Hybrid Casual mobile games</li>
+            <li data-i18n="exp_imba_li2">Independently capture &amp; produce CPI marketing videos for prototype games</li>
+            <li data-i18n="exp_imba_li3">Design &amp; implement core mechanics: simple, addictive, scalable</li>
+            <li data-i18n="exp_imba_li4">Build &amp; deploy for Android and iOS</li>
+            <li data-i18n="exp_imba_li5">Optimize performance: FPS, memory usage, loading time</li>
+            <li data-i18n="exp_imba_li6">Collaborate with Game Designers, Artists, and Marketing teams</li>
           </ul>
         </div>
         <div class="tl-item reveal">
@@ -516,8 +559,8 @@
           </div>
           <span class="tl-date">· April 2024 – July 2024</span>
           <ul class="tl-list">
-            <li>Participated in product acceleration program</li>
-            <li>Focus: developing &amp; testing Hybrid Casual game products</li>
+            <li data-i18n="exp_crazy_li1">Participated in product acceleration program</li>
+            <li data-i18n="exp_crazy_li2">Focus: developing &amp; testing Hybrid Casual game products</li>
           </ul>
         </div>
       </div>
@@ -528,15 +571,15 @@
   <section id="projects">
     <div class="container">
       <div class="section-head reveal">
-        <div class="kicker">Projects</div>
-        <h2>Selected work</h2>
+        <div class="kicker" data-i18n="proj_kicker">Projects</div>
+        <h2 data-i18n="proj_title">Selected work</h2>
       </div>
       <div class="projects-grid">
         <div class="project-card reveal">
           <div class="pj-icon"><i data-lucide="shield"></i></div>
           <div class="pj-date">July 2025 – August 2025</div>
           <h3>State Protector</h3>
-          <p>A tower defense action game where you protect a moving train from relentless enemy waves. I built the core gameplay mechanics, enemy AI behaviors, and combat systems — optimized for mobile and architected with scalable systems for future content.</p>
+          <p data-i18n="proj_state_desc">A tower defense action game where you protect a moving train from relentless enemy waves. I built the core gameplay mechanics, enemy AI behaviors, and combat systems — optimized for mobile and architected with scalable systems for future content.</p>
           <div class="pj-tags">
             <span class="pj-tag">Unity</span>
             <span class="pj-tag">C#</span>
@@ -544,7 +587,7 @@
             <span class="pj-tag">Enemy AI</span>
             <span class="pj-tag">Mobile</span>
           </div>
-          <a class="pj-link" href="https://appmagic.rocks/iphone/state-protector/6749788490" target="_blank" rel="noopener">View on AppMagic <i data-lucide="arrow-right"></i></a>
+          <a class="pj-link" href="https://appmagic.rocks/iphone/state-protector/6749788490" target="_blank" rel="noopener"><span data-i18n="proj_link">View on AppMagic</span> <i data-lucide="arrow-right"></i></a>
         </div>
       </div>
     </div>
@@ -554,15 +597,15 @@
   <section id="education">
     <div class="container">
       <div class="section-head reveal">
-        <div class="kicker">Education</div>
-        <h2>Academic background</h2>
+        <div class="kicker" data-i18n="edu_kicker">Education</div>
+        <h2 data-i18n="edu_title">Academic background</h2>
       </div>
       <div class="edu-card reveal">
         <div class="edu-icon"><i data-lucide="graduation-cap"></i></div>
         <div>
           <h3>Ho Chi Minh City University of Technology and Engineering</h3>
-          <div class="edu-meta">Information Technology · 2020 – 2024</div>
-          <p>Participated in academic competitions and Hackathons, sharpening problem-solving skills and applying software engineering fundamentals to real, time-boxed challenges.</p>
+          <div class="edu-meta" data-i18n="edu_meta">Information Technology · 2020 – 2024</div>
+          <p data-i18n="edu_desc">Participated in academic competitions and Hackathons, sharpening problem-solving skills and applying software engineering fundamentals to real, time-boxed challenges.</p>
         </div>
       </div>
     </div>
@@ -572,14 +615,14 @@
   <section id="contact" class="contact">
     <div class="container">
       <div class="section-head reveal">
-        <div class="kicker">Contact</div>
-        <h2>Let's build something together</h2>
+        <div class="kicker" data-i18n="contact_kicker">Contact</div>
+        <h2 data-i18n="contact_title">Let's build something together</h2>
       </div>
-      <p class="contact-lead reveal">Open to new opportunities and collaborations. Reach out through any of the channels below.</p>
+      <p class="contact-lead reveal" data-i18n="contact_lead">Open to new opportunities and collaborations. Reach out through any of the channels below.</p>
       <div class="contact-cards reveal">
         <a class="contact-card" href="mailto:nguyenduc345345@gmail.com">
           <i data-lucide="mail"></i>
-          <span class="c-label">Email</span>
+          <span class="c-label" data-i18n="contact_email_label">Email</span>
           <span class="c-value">nguyenduc345345@gmail.com</span>
         </a>
         <a class="contact-card" href="https://www.linkedin.com/in/hiengamedev" target="_blank" rel="noopener">
@@ -589,18 +632,18 @@
         </a>
         <a class="contact-card" href="tel:0948047842">
           <i data-lucide="phone"></i>
-          <span class="c-label">Phone</span>
+          <span class="c-label" data-i18n="contact_phone_label">Phone</span>
           <span class="c-value">0948 047 842</span>
         </a>
       </div>
-      <a href="assets/CV.pdf" class="btn btn-primary reveal" download><i data-lucide="download"></i> Download CV</a>
+      <a href="assets/CV.pdf" class="btn btn-primary reveal" download><i data-lucide="download"></i> <span data-i18n="contact_download">Download CV</span></a>
     </div>
   </section>
 
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="container">
-      <p>© <span id="year"></span> Nguyen Duc Hien · Built with vanilla HTML, CSS &amp; JS</p>
+      <p>© <span id="year"></span> Nguyen Duc Hien <span data-i18n="footer_suffix">· Built with vanilla HTML, CSS &amp; JS</span></p>
       <div class="socials">
         <a href="https://www.linkedin.com/in/hiengamedev" target="_blank" rel="noopener" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
         <a href="mailto:nguyenduc345345@gmail.com" aria-label="Email"><i data-lucide="mail"></i></a>
@@ -610,19 +653,396 @@
   </footer>
 
   <script>
-    /* ---------- Lucide icons ---------- */
+    /* ============ i18n ============ */
+    const LANGS = [
+      { code: 'en', flag: '🇬🇧', name: 'English' },
+      { code: 'vi', flag: '🇻🇳', name: 'Tiếng Việt' },
+      { code: 'zh', flag: '🇨🇳', name: '中文' },
+      { code: 'es', flag: '🇪🇸', name: 'Español' },
+      { code: 'fr', flag: '🇫🇷', name: 'Français' },
+      { code: 'de', flag: '🇩🇪', name: 'Deutsch' },
+      { code: 'ja', flag: '🇯🇵', name: '日本語' },
+      { code: 'ko', flag: '🇰🇷', name: '한국어' },
+      { code: 'pt', flag: '🇵🇹', name: 'Português' },
+      { code: 'ru', flag: '🇷🇺', name: 'Русский' }
+    ];
+
+    const I18N = {
+      en: {
+        meta_title: "Nguyen Duc Hien · Game Developer",
+        nav_about: "About", nav_skills: "Skills", nav_experience: "Experience", nav_projects: "Projects", nav_education: "Education", nav_contact: "Contact",
+        hero_status: "Available for new opportunities",
+        hero_subtitle: "Game Developer · Unity · Mobile",
+        hero_tagline: "“Building scalable, addictive mobile games — growing toward Lead.”",
+        hero_cta_projects: "View Projects", hero_cta_contact: "Contact Me",
+        about_kicker: "About Me", about_title: "Crafting games that players keep coming back to",
+        about_p1: "I'm a Game Developer with 2+ years of professional experience building Hybrid Casual mobile games with Unity and C#. My focus is on creating mechanics that are simple, addictive, and scalable.",
+        about_p2: "I care about the full lifecycle — from prototyping core gameplay and producing CPI marketing videos, to optimizing performance and shipping on both Android and iOS. I work closely with designers, artists, and marketing teams, and I'm growing toward a Lead role.",
+        about_stat1_num: "2+ years", about_stat1_label: "Professional Experience", about_stat2_label: "Games Shipped (Android + iOS)", about_stat3_label: "Acceleration Program (CrazyLabs)",
+        skills_kicker: "Skills", skills_title: "Tools & technologies I work with",
+        skill_patterns: "Design Patterns", skill_dsa: "Data Structures & Algorithms", skill_ai: "AI-assisted Coding (Claude)", skill_opt: "Mobile Optimization (FPS, Memory, Load Time)", skill_trouble: "Troubleshooting & Problem Solving", skill_deploy: "Android & iOS Deploy",
+        exp_kicker: "Experience", exp_title: "Where I've been building", exp_role: "Game Developer", exp_present: "Present",
+        exp_imba_li1: "Develop & optimize gameplay features for Hybrid Casual mobile games",
+        exp_imba_li2: "Independently capture & produce CPI marketing videos for prototype games",
+        exp_imba_li3: "Design & implement core mechanics: simple, addictive, scalable",
+        exp_imba_li4: "Build & deploy for Android and iOS",
+        exp_imba_li5: "Optimize performance: FPS, memory usage, loading time",
+        exp_imba_li6: "Collaborate with Game Designers, Artists, and Marketing teams",
+        exp_crazy_li1: "Participated in product acceleration program",
+        exp_crazy_li2: "Focus: developing & testing Hybrid Casual game products",
+        proj_kicker: "Projects", proj_title: "Selected work",
+        proj_state_desc: "A tower defense action game where you protect a moving train from relentless enemy waves. I built the core gameplay mechanics, enemy AI behaviors, and combat systems — optimized for mobile and architected with scalable systems for future content.",
+        proj_link: "View on AppMagic",
+        edu_kicker: "Education", edu_title: "Academic background", edu_meta: "Information Technology · 2020 – 2024",
+        edu_desc: "Participated in academic competitions and Hackathons, sharpening problem-solving skills and applying software engineering fundamentals to real, time-boxed challenges.",
+        contact_kicker: "Contact", contact_title: "Let's build something together",
+        contact_lead: "Open to new opportunities and collaborations. Reach out through any of the channels below.",
+        contact_email_label: "Email", contact_phone_label: "Phone", contact_download: "Download CV",
+        footer_suffix: "· Built with vanilla HTML, CSS & JS"
+      },
+      vi: {
+        meta_title: "Nguyen Duc Hien · Lập trình viên Game",
+        nav_about: "Giới thiệu", nav_skills: "Kỹ năng", nav_experience: "Kinh nghiệm", nav_projects: "Dự án", nav_education: "Học vấn", nav_contact: "Liên hệ",
+        hero_status: "Sẵn sàng cho cơ hội mới",
+        hero_subtitle: "Lập trình viên Game · Unity · Mobile",
+        hero_tagline: "“Xây dựng những game mobile cuốn hút, dễ mở rộng — hướng tới vị trí Lead.”",
+        hero_cta_projects: "Xem dự án", hero_cta_contact: "Liên hệ tôi",
+        about_kicker: "Về tôi", about_title: "Tạo ra những game khiến người chơi quay lại",
+        about_p1: "Tôi là Lập trình viên Game với hơn 2 năm kinh nghiệm xây dựng các game mobile Hybrid Casual bằng Unity và C#. Tôi tập trung tạo ra cơ chế chơi đơn giản, gây nghiện và dễ mở rộng.",
+        about_p2: "Tôi quan tâm tới toàn bộ vòng đời sản phẩm — từ làm prototype gameplay, sản xuất video marketing CPI, tới tối ưu hiệu năng và phát hành trên cả Android và iOS. Tôi làm việc chặt chẽ với đội thiết kế, họa sĩ và marketing, và đang phát triển hướng tới vai trò Lead.",
+        about_stat1_num: "2+ năm", about_stat1_label: "Kinh nghiệm chuyên môn", about_stat2_label: "Game đã phát hành (Android + iOS)", about_stat3_label: "Chương trình tăng tốc (CrazyLabs)",
+        skills_kicker: "Kỹ năng", skills_title: "Công cụ & công nghệ tôi sử dụng",
+        skill_patterns: "Design Patterns", skill_dsa: "Cấu trúc dữ liệu & Giải thuật", skill_ai: "Lập trình hỗ trợ AI (Claude)", skill_opt: "Tối ưu Mobile (FPS, Bộ nhớ, Thời gian tải)", skill_trouble: "Xử lý sự cố & Giải quyết vấn đề", skill_deploy: "Triển khai Android & iOS",
+        exp_kicker: "Kinh nghiệm", exp_title: "Nơi tôi đã xây dựng", exp_role: "Lập trình viên Game", exp_present: "Hiện tại",
+        exp_imba_li1: "Phát triển & tối ưu tính năng gameplay cho game mobile Hybrid Casual",
+        exp_imba_li2: "Tự quay & sản xuất video marketing CPI cho các game prototype",
+        exp_imba_li3: "Thiết kế & triển khai cơ chế cốt lõi: đơn giản, gây nghiện, dễ mở rộng",
+        exp_imba_li4: "Build & phát hành cho Android và iOS",
+        exp_imba_li5: "Tối ưu hiệu năng: FPS, bộ nhớ, thời gian tải",
+        exp_imba_li6: "Phối hợp với đội Game Designer, Họa sĩ và Marketing",
+        exp_crazy_li1: "Tham gia chương trình tăng tốc sản phẩm",
+        exp_crazy_li2: "Trọng tâm: phát triển & kiểm thử sản phẩm game Hybrid Casual",
+        proj_kicker: "Dự án", proj_title: "Dự án tiêu biểu",
+        proj_state_desc: "Game hành động tower defense, nơi bạn bảo vệ một đoàn tàu đang di chuyển khỏi những đợt kẻ địch dồn dập. Tôi xây dựng cơ chế gameplay cốt lõi, hành vi AI của kẻ địch và hệ thống chiến đấu — tối ưu cho mobile và thiết kế hệ thống dễ mở rộng cho nội dung tương lai.",
+        proj_link: "Xem trên AppMagic",
+        edu_kicker: "Học vấn", edu_title: "Quá trình học tập", edu_meta: "Công nghệ thông tin · 2020 – 2024",
+        edu_desc: "Tham gia các cuộc thi học thuật và Hackathon, rèn luyện kỹ năng giải quyết vấn đề và áp dụng nền tảng kỹ thuật phần mềm vào những thử thách thực tế, giới hạn thời gian.",
+        contact_kicker: "Liên hệ", contact_title: "Cùng nhau tạo nên điều gì đó",
+        contact_lead: "Sẵn sàng cho cơ hội và hợp tác mới. Hãy liên hệ qua bất kỳ kênh nào bên dưới.",
+        contact_email_label: "Email", contact_phone_label: "Điện thoại", contact_download: "Tải CV",
+        footer_suffix: "· Xây dựng bằng HTML, CSS & JS thuần"
+      },
+      zh: {
+        meta_title: "Nguyen Duc Hien · 游戏开发者",
+        nav_about: "关于", nav_skills: "技能", nav_experience: "经历", nav_projects: "项目", nav_education: "教育", nav_contact: "联系",
+        hero_status: "正在寻找新机会",
+        hero_subtitle: "游戏开发者 · Unity · 移动端",
+        hero_tagline: "“打造可扩展、令人上瘾的手机游戏 —— 朝着主程方向成长。”",
+        hero_cta_projects: "查看项目", hero_cta_contact: "联系我",
+        about_kicker: "关于我", about_title: "打造让玩家流连忘返的游戏",
+        about_p1: "我是一名游戏开发者，拥有 2 年以上使用 Unity 和 C# 开发 Hybrid Casual 手机游戏的专业经验。我专注于设计简单、上瘾且可扩展的玩法机制。",
+        about_p2: "我关注产品的完整生命周期 —— 从原型玩法开发、制作 CPI 营销视频，到性能优化以及在 Android 和 iOS 上发布。我与设计师、美术和市场团队紧密协作，并正朝着主程角色成长。",
+        about_stat1_num: "2+ 年", about_stat1_label: "专业经验", about_stat2_label: "已发布游戏（Android + iOS）", about_stat3_label: "加速计划（CrazyLabs）",
+        skills_kicker: "技能", skills_title: "我使用的工具与技术",
+        skill_patterns: "设计模式", skill_dsa: "数据结构与算法", skill_ai: "AI 辅助编程（Claude）", skill_opt: "移动端优化（FPS、内存、加载时间）", skill_trouble: "故障排查与问题解决", skill_deploy: "Android 与 iOS 发布",
+        exp_kicker: "经历", exp_title: "我的工作历程", exp_role: "游戏开发者", exp_present: "至今",
+        exp_imba_li1: "为 Hybrid Casual 手机游戏开发并优化玩法功能",
+        exp_imba_li2: "独立拍摄并制作原型游戏的 CPI 营销视频",
+        exp_imba_li3: "设计并实现核心机制：简单、上瘾、可扩展",
+        exp_imba_li4: "为 Android 和 iOS 构建与发布",
+        exp_imba_li5: "优化性能：FPS、内存占用、加载时间",
+        exp_imba_li6: "与游戏策划、美术和市场团队协作",
+        exp_crazy_li1: "参与产品加速计划",
+        exp_crazy_li2: "重点：开发与测试 Hybrid Casual 游戏产品",
+        proj_kicker: "项目", proj_title: "精选作品",
+        proj_state_desc: "一款塔防动作游戏，你需要保护一列行进中的火车抵御源源不断的敌人浪潮。我构建了核心玩法机制、敌人 AI 行为和战斗系统 —— 针对移动端优化，并为未来内容设计了可扩展的系统架构。",
+        proj_link: "在 AppMagic 上查看",
+        edu_kicker: "教育", edu_title: "学术背景", edu_meta: "信息技术 · 2020 – 2024",
+        edu_desc: "参加学术竞赛和黑客松，磨练解决问题的能力，并将软件工程基础应用于真实的限时挑战中。",
+        contact_kicker: "联系", contact_title: "一起打造点什么吧",
+        contact_lead: "欢迎新的机会与合作。可通过下方任意方式联系我。",
+        contact_email_label: "邮箱", contact_phone_label: "电话", contact_download: "下载简历",
+        footer_suffix: "· 使用原生 HTML、CSS 和 JS 构建"
+      },
+      es: {
+        meta_title: "Nguyen Duc Hien · Desarrollador de Videojuegos",
+        nav_about: "Sobre mí", nav_skills: "Habilidades", nav_experience: "Experiencia", nav_projects: "Proyectos", nav_education: "Educación", nav_contact: "Contacto",
+        hero_status: "Disponible para nuevas oportunidades",
+        hero_subtitle: "Desarrollador de Videojuegos · Unity · Móvil",
+        hero_tagline: "«Creando juegos móviles escalables y adictivos — creciendo hacia Lead.»",
+        hero_cta_projects: "Ver proyectos", hero_cta_contact: "Contáctame",
+        about_kicker: "Sobre mí", about_title: "Creando juegos a los que los jugadores vuelven",
+        about_p1: "Soy Desarrollador de Videojuegos con más de 2 años de experiencia profesional creando juegos móviles Hybrid Casual con Unity y C#. Me enfoco en diseñar mecánicas simples, adictivas y escalables.",
+        about_p2: "Me importa todo el ciclo de vida — desde prototipar el gameplay y producir videos de marketing CPI, hasta optimizar el rendimiento y publicar en Android e iOS. Trabajo estrechamente con diseñadores, artistas y equipos de marketing, y avanzo hacia un rol de Lead.",
+        about_stat1_num: "2+ años", about_stat1_label: "Experiencia profesional", about_stat2_label: "Juegos publicados (Android + iOS)", about_stat3_label: "Programa de aceleración (CrazyLabs)",
+        skills_kicker: "Habilidades", skills_title: "Herramientas y tecnologías que uso",
+        skill_patterns: "Patrones de diseño", skill_dsa: "Estructuras de datos y algoritmos", skill_ai: "Programación asistida por IA (Claude)", skill_opt: "Optimización móvil (FPS, memoria, tiempo de carga)", skill_trouble: "Resolución de problemas", skill_deploy: "Despliegue en Android e iOS",
+        exp_kicker: "Experiencia", exp_title: "Dónde he estado construyendo", exp_role: "Desarrollador de Videojuegos", exp_present: "Actual",
+        exp_imba_li1: "Desarrollar y optimizar funciones de gameplay para juegos móviles Hybrid Casual",
+        exp_imba_li2: "Grabar y producir de forma independiente videos de marketing CPI para juegos prototipo",
+        exp_imba_li3: "Diseñar e implementar mecánicas centrales: simples, adictivas, escalables",
+        exp_imba_li4: "Compilar y publicar para Android e iOS",
+        exp_imba_li5: "Optimizar el rendimiento: FPS, uso de memoria, tiempo de carga",
+        exp_imba_li6: "Colaborar con diseñadores de juegos, artistas y equipos de marketing",
+        exp_crazy_li1: "Participación en el programa de aceleración de productos",
+        exp_crazy_li2: "Enfoque: desarrollo y pruebas de productos de juegos Hybrid Casual",
+        proj_kicker: "Proyectos", proj_title: "Trabajos seleccionados",
+        proj_state_desc: "Un juego de acción tower defense donde proteges un tren en movimiento de incesantes oleadas de enemigos. Construí las mecánicas centrales, el comportamiento de la IA enemiga y los sistemas de combate — optimizado para móvil y con sistemas escalables para contenido futuro.",
+        proj_link: "Ver en AppMagic",
+        edu_kicker: "Educación", edu_title: "Formación académica", edu_meta: "Tecnología de la Información · 2020 – 2024",
+        edu_desc: "Participé en competiciones académicas y hackatones, perfeccionando habilidades de resolución de problemas y aplicando fundamentos de ingeniería de software a desafíos reales con tiempo limitado.",
+        contact_kicker: "Contacto", contact_title: "Construyamos algo juntos",
+        contact_lead: "Abierto a nuevas oportunidades y colaboraciones. Contáctame por cualquiera de los canales de abajo.",
+        contact_email_label: "Correo", contact_phone_label: "Teléfono", contact_download: "Descargar CV",
+        footer_suffix: "· Hecho con HTML, CSS y JS puro"
+      },
+      fr: {
+        meta_title: "Nguyen Duc Hien · Développeur de Jeux",
+        nav_about: "À propos", nav_skills: "Compétences", nav_experience: "Expérience", nav_projects: "Projets", nav_education: "Formation", nav_contact: "Contact",
+        hero_status: "Disponible pour de nouvelles opportunités",
+        hero_subtitle: "Développeur de Jeux · Unity · Mobile",
+        hero_tagline: "« Créer des jeux mobiles évolutifs et addictifs — en évoluant vers Lead. »",
+        hero_cta_projects: "Voir les projets", hero_cta_contact: "Me contacter",
+        about_kicker: "À propos", about_title: "Créer des jeux qui font revenir les joueurs",
+        about_p1: "Je suis Développeur de Jeux avec plus de 2 ans d'expérience professionnelle dans la création de jeux mobiles Hybrid Casual avec Unity et C#. Je me concentre sur des mécaniques simples, addictives et évolutives.",
+        about_p2: "Je m'intéresse à tout le cycle de vie — du prototypage du gameplay à la production de vidéos marketing CPI, jusqu'à l'optimisation des performances et la publication sur Android et iOS. Je collabore étroitement avec les designers, les artistes et les équipes marketing, et j'évolue vers un rôle de Lead.",
+        about_stat1_num: "2+ ans", about_stat1_label: "Expérience professionnelle", about_stat2_label: "Jeux publiés (Android + iOS)", about_stat3_label: "Programme d'accélération (CrazyLabs)",
+        skills_kicker: "Compétences", skills_title: "Outils et technologies que j'utilise",
+        skill_patterns: "Design Patterns", skill_dsa: "Structures de données et algorithmes", skill_ai: "Programmation assistée par IA (Claude)", skill_opt: "Optimisation mobile (FPS, mémoire, temps de chargement)", skill_trouble: "Dépannage et résolution de problèmes", skill_deploy: "Déploiement Android et iOS",
+        exp_kicker: "Expérience", exp_title: "Où j'ai travaillé", exp_role: "Développeur de Jeux", exp_present: "Actuel",
+        exp_imba_li1: "Développer et optimiser des fonctionnalités de gameplay pour des jeux mobiles Hybrid Casual",
+        exp_imba_li2: "Filmer et produire de façon autonome des vidéos marketing CPI pour des jeux prototypes",
+        exp_imba_li3: "Concevoir et implémenter des mécaniques centrales : simples, addictives, évolutives",
+        exp_imba_li4: "Compiler et publier pour Android et iOS",
+        exp_imba_li5: "Optimiser les performances : FPS, mémoire, temps de chargement",
+        exp_imba_li6: "Collaborer avec les game designers, les artistes et les équipes marketing",
+        exp_crazy_li1: "Participation au programme d'accélération de produits",
+        exp_crazy_li2: "Objectif : développement et test de produits de jeux Hybrid Casual",
+        proj_kicker: "Projets", proj_title: "Travaux sélectionnés",
+        proj_state_desc: "Un jeu d'action tower defense où vous protégez un train en mouvement contre des vagues d'ennemis incessantes. J'ai construit les mécaniques de gameplay, le comportement de l'IA ennemie et les systèmes de combat — optimisé pour le mobile et architecturé avec des systèmes évolutifs pour le contenu futur.",
+        proj_link: "Voir sur AppMagic",
+        edu_kicker: "Formation", edu_title: "Parcours académique", edu_meta: "Technologies de l'information · 2020 – 2024",
+        edu_desc: "Participation à des compétitions académiques et des hackathons, affinant mes compétences en résolution de problèmes et appliquant les fondamentaux du génie logiciel à de vrais défis chronométrés.",
+        contact_kicker: "Contact", contact_title: "Construisons quelque chose ensemble",
+        contact_lead: "Ouvert aux nouvelles opportunités et collaborations. Contactez-moi via l'un des canaux ci-dessous.",
+        contact_email_label: "E-mail", contact_phone_label: "Téléphone", contact_download: "Télécharger le CV",
+        footer_suffix: "· Réalisé en HTML, CSS et JS purs"
+      },
+      de: {
+        meta_title: "Nguyen Duc Hien · Game Developer",
+        nav_about: "Über mich", nav_skills: "Fähigkeiten", nav_experience: "Erfahrung", nav_projects: "Projekte", nav_education: "Ausbildung", nav_contact: "Kontakt",
+        hero_status: "Offen für neue Möglichkeiten",
+        hero_subtitle: "Game Developer · Unity · Mobile",
+        hero_tagline: "„Skalierbare, fesselnde Mobile Games entwickeln – auf dem Weg zum Lead.“",
+        hero_cta_projects: "Projekte ansehen", hero_cta_contact: "Kontakt",
+        about_kicker: "Über mich", about_title: "Spiele, zu denen Spieler immer wieder zurückkehren",
+        about_p1: "Ich bin Game Developer mit über 2 Jahren Berufserfahrung in der Entwicklung von Hybrid-Casual-Mobile-Games mit Unity und C#. Mein Fokus liegt auf einfachen, fesselnden und skalierbaren Spielmechaniken.",
+        about_p2: "Mir liegt der gesamte Lebenszyklus am Herzen – vom Prototyping des Gameplays über die Produktion von CPI-Marketingvideos bis hin zur Performance-Optimierung und Veröffentlichung auf Android und iOS. Ich arbeite eng mit Designern, Artists und Marketing-Teams zusammen und entwickle mich in Richtung Lead.",
+        about_stat1_num: "2+ Jahre", about_stat1_label: "Berufserfahrung", about_stat2_label: "Veröffentlichte Spiele (Android + iOS)", about_stat3_label: "Acceleration-Programm (CrazyLabs)",
+        skills_kicker: "Fähigkeiten", skills_title: "Tools & Technologien, mit denen ich arbeite",
+        skill_patterns: "Design Patterns", skill_dsa: "Datenstrukturen & Algorithmen", skill_ai: "KI-gestütztes Programmieren (Claude)", skill_opt: "Mobile-Optimierung (FPS, Speicher, Ladezeit)", skill_trouble: "Fehlerbehebung & Problemlösung", skill_deploy: "Android- & iOS-Deployment",
+        exp_kicker: "Erfahrung", exp_title: "Wo ich gebaut habe", exp_role: "Game Developer", exp_present: "Aktuell",
+        exp_imba_li1: "Gameplay-Features für Hybrid-Casual-Mobile-Games entwickeln und optimieren",
+        exp_imba_li2: "Eigenständig CPI-Marketingvideos für Prototyp-Spiele aufnehmen und produzieren",
+        exp_imba_li3: "Kernmechaniken entwerfen und umsetzen: einfach, fesselnd, skalierbar",
+        exp_imba_li4: "Builds für Android und iOS erstellen und veröffentlichen",
+        exp_imba_li5: "Performance optimieren: FPS, Speichernutzung, Ladezeit",
+        exp_imba_li6: "Mit Game Designern, Artists und Marketing-Teams zusammenarbeiten",
+        exp_crazy_li1: "Teilnahme am Produkt-Acceleration-Programm",
+        exp_crazy_li2: "Fokus: Entwicklung und Testen von Hybrid-Casual-Spielprodukten",
+        proj_kicker: "Projekte", proj_title: "Ausgewählte Arbeiten",
+        proj_state_desc: "Ein Tower-Defense-Actionspiel, in dem du einen fahrenden Zug vor unerbittlichen Gegnerwellen schützt. Ich habe die Kern-Gameplay-Mechaniken, das Verhalten der Gegner-KI und die Kampfsysteme entwickelt – für Mobile optimiert und mit skalierbaren Systemen für künftige Inhalte konzipiert.",
+        proj_link: "Auf AppMagic ansehen",
+        edu_kicker: "Ausbildung", edu_title: "Akademischer Werdegang", edu_meta: "Informationstechnologie · 2020 – 2024",
+        edu_desc: "Teilnahme an akademischen Wettbewerben und Hackathons, Schärfung der Problemlösungsfähigkeiten und Anwendung von Software-Engineering-Grundlagen auf reale, zeitlich begrenzte Herausforderungen.",
+        contact_kicker: "Kontakt", contact_title: "Lass uns gemeinsam etwas bauen",
+        contact_lead: "Offen für neue Möglichkeiten und Kooperationen. Erreiche mich über einen der Kanäle unten.",
+        contact_email_label: "E-Mail", contact_phone_label: "Telefon", contact_download: "Lebenslauf herunterladen",
+        footer_suffix: "· Gebaut mit reinem HTML, CSS & JS"
+      },
+      ja: {
+        meta_title: "Nguyen Duc Hien · ゲーム開発者",
+        nav_about: "概要", nav_skills: "スキル", nav_experience: "経歴", nav_projects: "プロジェクト", nav_education: "学歴", nav_contact: "連絡先",
+        hero_status: "新しい機会を募集中",
+        hero_subtitle: "ゲーム開発者 · Unity · モバイル",
+        hero_tagline: "「スケーラブルで中毒性のあるモバイルゲームを作り、リードを目指して成長する。」",
+        hero_cta_projects: "プロジェクトを見る", hero_cta_contact: "連絡する",
+        about_kicker: "私について", about_title: "プレイヤーが何度も戻ってくるゲームを",
+        about_p1: "私はゲーム開発者で、Unity と C# を用いた Hybrid Casual モバイルゲームの開発において2年以上の実務経験があります。シンプルで中毒性があり、拡張しやすいメカニクスの設計に注力しています。",
+        about_p2: "ゲームプレイのプロトタイピングや CPI マーケティング動画の制作から、パフォーマンス最適化、Android と iOS への配信まで、製品のライフサイクル全体を大切にしています。デザイナー、アーティスト、マーケティングチームと密に連携し、リードの役割を目指して成長中です。",
+        about_stat1_num: "2年以上", about_stat1_label: "実務経験", about_stat2_label: "リリースしたゲーム（Android + iOS）", about_stat3_label: "アクセラレーションプログラム（CrazyLabs）",
+        skills_kicker: "スキル", skills_title: "使用するツールと技術",
+        skill_patterns: "デザインパターン", skill_dsa: "データ構造とアルゴリズム", skill_ai: "AI支援コーディング（Claude）", skill_opt: "モバイル最適化（FPS、メモリ、読み込み時間）", skill_trouble: "トラブルシューティングと問題解決", skill_deploy: "Android・iOS へのデプロイ",
+        exp_kicker: "経歴", exp_title: "これまでの開発", exp_role: "ゲーム開発者", exp_present: "現在",
+        exp_imba_li1: "Hybrid Casual モバイルゲームのゲームプレイ機能を開発・最適化",
+        exp_imba_li2: "プロトタイプゲームの CPI マーケティング動画を独力で撮影・制作",
+        exp_imba_li3: "コアメカニクスを設計・実装：シンプル、中毒性、拡張性",
+        exp_imba_li4: "Android と iOS 向けにビルド・配信",
+        exp_imba_li5: "パフォーマンス最適化：FPS、メモリ使用量、読み込み時間",
+        exp_imba_li6: "ゲームデザイナー、アーティスト、マーケティングチームと協働",
+        exp_crazy_li1: "製品アクセラレーションプログラムに参加",
+        exp_crazy_li2: "重点：Hybrid Casual ゲーム製品の開発とテスト",
+        proj_kicker: "プロジェクト", proj_title: "主な制作物",
+        proj_state_desc: "走行中の列車を絶え間ない敵の波から守るタワーディフェンス・アクションゲーム。コアとなるゲームプレイメカニクス、敵AIの挙動、戦闘システムを構築し、モバイル向けに最適化、将来のコンテンツに向けて拡張可能なシステムを設計しました。",
+        proj_link: "AppMagic で見る",
+        edu_kicker: "学歴", edu_title: "学業背景", edu_meta: "情報技術 · 2020 – 2024",
+        edu_desc: "学術コンテストやハッカソンに参加し、問題解決能力を磨き、ソフトウェア工学の基礎を時間制限のある実践的な課題に応用しました。",
+        contact_kicker: "連絡先", contact_title: "一緒に何かを作りましょう",
+        contact_lead: "新しい機会やコラボレーションを歓迎します。下記のいずれかの方法でご連絡ください。",
+        contact_email_label: "メール", contact_phone_label: "電話", contact_download: "履歴書をダウンロード",
+        footer_suffix: "· 素の HTML、CSS、JS で構築"
+      },
+      ko: {
+        meta_title: "Nguyen Duc Hien · 게임 개발자",
+        nav_about: "소개", nav_skills: "기술", nav_experience: "경력", nav_projects: "프로젝트", nav_education: "학력", nav_contact: "연락처",
+        hero_status: "새로운 기회를 찾고 있습니다",
+        hero_subtitle: "게임 개발자 · Unity · 모바일",
+        hero_tagline: "“확장 가능하고 중독성 있는 모바일 게임을 만들며 — 리드를 향해 성장합니다.”",
+        hero_cta_projects: "프로젝트 보기", hero_cta_contact: "연락하기",
+        about_kicker: "소개", about_title: "플레이어가 다시 찾는 게임 만들기",
+        about_p1: "저는 Unity와 C#으로 Hybrid Casual 모바일 게임을 만든 2년 이상의 실무 경력을 가진 게임 개발자입니다. 단순하고 중독성 있으며 확장 가능한 메커니즘 설계에 집중합니다.",
+        about_p2: "게임플레이 프로토타이핑과 CPI 마케팅 영상 제작부터 성능 최적화, Android와 iOS 출시까지 제품의 전체 수명 주기를 중요하게 생각합니다. 디자이너, 아티스트, 마케팅 팀과 긴밀히 협업하며 리드 역할을 향해 성장하고 있습니다.",
+        about_stat1_num: "2년 이상", about_stat1_label: "실무 경력", about_stat2_label: "출시한 게임 (Android + iOS)", about_stat3_label: "액셀러레이션 프로그램 (CrazyLabs)",
+        skills_kicker: "기술", skills_title: "제가 사용하는 도구와 기술",
+        skill_patterns: "디자인 패턴", skill_dsa: "자료구조와 알고리즘", skill_ai: "AI 보조 코딩 (Claude)", skill_opt: "모바일 최적화 (FPS, 메모리, 로딩 시간)", skill_trouble: "문제 해결 및 트러블슈팅", skill_deploy: "Android & iOS 배포",
+        exp_kicker: "경력", exp_title: "제가 만들어 온 곳", exp_role: "게임 개발자", exp_present: "현재",
+        exp_imba_li1: "Hybrid Casual 모바일 게임의 게임플레이 기능 개발 및 최적화",
+        exp_imba_li2: "프로토타입 게임의 CPI 마케팅 영상을 독자적으로 촬영 및 제작",
+        exp_imba_li3: "핵심 메커니즘 설계 및 구현: 단순하고 중독성 있으며 확장 가능하게",
+        exp_imba_li4: "Android와 iOS용 빌드 및 배포",
+        exp_imba_li5: "성능 최적화: FPS, 메모리 사용량, 로딩 시간",
+        exp_imba_li6: "게임 디자이너, 아티스트, 마케팅 팀과 협업",
+        exp_crazy_li1: "제품 액셀러레이션 프로그램 참여",
+        exp_crazy_li2: "중점: Hybrid Casual 게임 제품 개발 및 테스트",
+        proj_kicker: "프로젝트", proj_title: "주요 작업",
+        proj_state_desc: "움직이는 기차를 끊임없는 적의 물결로부터 지키는 타워 디펜스 액션 게임입니다. 핵심 게임플레이 메커니즘, 적 AI 행동, 전투 시스템을 구축했으며 — 모바일에 최적화하고 향후 콘텐츠를 위한 확장 가능한 시스템으로 설계했습니다.",
+        proj_link: "AppMagic에서 보기",
+        edu_kicker: "학력", edu_title: "학업 배경", edu_meta: "정보기술 · 2020 – 2024",
+        edu_desc: "학술 대회와 해커톤에 참가하여 문제 해결 능력을 갈고닦고, 소프트웨어 공학 기초를 실제 시간 제한이 있는 과제에 적용했습니다.",
+        contact_kicker: "연락처", contact_title: "함께 무언가를 만들어요",
+        contact_lead: "새로운 기회와 협업을 환영합니다. 아래 채널 중 어떤 방법으로든 연락 주세요.",
+        contact_email_label: "이메일", contact_phone_label: "전화", contact_download: "이력서 다운로드",
+        footer_suffix: "· 순수 HTML, CSS & JS로 제작"
+      },
+      pt: {
+        meta_title: "Nguyen Duc Hien · Desenvolvedor de Jogos",
+        nav_about: "Sobre", nav_skills: "Habilidades", nav_experience: "Experiência", nav_projects: "Projetos", nav_education: "Formação", nav_contact: "Contato",
+        hero_status: "Disponível para novas oportunidades",
+        hero_subtitle: "Desenvolvedor de Jogos · Unity · Mobile",
+        hero_tagline: "“Criando jogos mobile escaláveis e viciantes — crescendo rumo a Lead.”",
+        hero_cta_projects: "Ver projetos", hero_cta_contact: "Fale comigo",
+        about_kicker: "Sobre mim", about_title: "Criando jogos aos quais os jogadores sempre voltam",
+        about_p1: "Sou Desenvolvedor de Jogos com mais de 2 anos de experiência profissional criando jogos mobile Hybrid Casual com Unity e C#. Meu foco é criar mecânicas simples, viciantes e escaláveis.",
+        about_p2: "Eu me importo com todo o ciclo de vida — da prototipagem do gameplay e produção de vídeos de marketing CPI até a otimização de desempenho e o lançamento em Android e iOS. Trabalho em estreita colaboração com designers, artistas e equipes de marketing, e estou crescendo rumo a um papel de Lead.",
+        about_stat1_num: "2+ anos", about_stat1_label: "Experiência profissional", about_stat2_label: "Jogos lançados (Android + iOS)", about_stat3_label: "Programa de aceleração (CrazyLabs)",
+        skills_kicker: "Habilidades", skills_title: "Ferramentas e tecnologias que uso",
+        skill_patterns: "Padrões de projeto", skill_dsa: "Estruturas de dados e algoritmos", skill_ai: "Programação assistida por IA (Claude)", skill_opt: "Otimização mobile (FPS, memória, tempo de carregamento)", skill_trouble: "Resolução de problemas", skill_deploy: "Deploy em Android e iOS",
+        exp_kicker: "Experiência", exp_title: "Onde tenho construído", exp_role: "Desenvolvedor de Jogos", exp_present: "Atual",
+        exp_imba_li1: "Desenvolver e otimizar recursos de gameplay para jogos mobile Hybrid Casual",
+        exp_imba_li2: "Gravar e produzir de forma independente vídeos de marketing CPI para jogos protótipo",
+        exp_imba_li3: "Projetar e implementar mecânicas centrais: simples, viciantes, escaláveis",
+        exp_imba_li4: "Compilar e publicar para Android e iOS",
+        exp_imba_li5: "Otimizar desempenho: FPS, uso de memória, tempo de carregamento",
+        exp_imba_li6: "Colaborar com game designers, artistas e equipes de marketing",
+        exp_crazy_li1: "Participação no programa de aceleração de produtos",
+        exp_crazy_li2: "Foco: desenvolvimento e teste de produtos de jogos Hybrid Casual",
+        proj_kicker: "Projetos", proj_title: "Trabalhos selecionados",
+        proj_state_desc: "Um jogo de ação tower defense onde você protege um trem em movimento de ondas implacáveis de inimigos. Construí as mecânicas centrais de gameplay, o comportamento da IA inimiga e os sistemas de combate — otimizado para mobile e arquitetado com sistemas escaláveis para conteúdo futuro.",
+        proj_link: "Ver no AppMagic",
+        edu_kicker: "Formação", edu_title: "Histórico acadêmico", edu_meta: "Tecnologia da Informação · 2020 – 2024",
+        edu_desc: "Participei de competições acadêmicas e hackathons, aprimorando habilidades de resolução de problemas e aplicando fundamentos de engenharia de software a desafios reais com tempo limitado.",
+        contact_kicker: "Contato", contact_title: "Vamos construir algo juntos",
+        contact_lead: "Aberto a novas oportunidades e colaborações. Fale comigo por qualquer um dos canais abaixo.",
+        contact_email_label: "E-mail", contact_phone_label: "Telefone", contact_download: "Baixar CV",
+        footer_suffix: "· Feito com HTML, CSS e JS puro"
+      },
+      ru: {
+        meta_title: "Nguyen Duc Hien · Разработчик игр",
+        nav_about: "Обо мне", nav_skills: "Навыки", nav_experience: "Опыт", nav_projects: "Проекты", nav_education: "Образование", nav_contact: "Контакты",
+        hero_status: "Открыт для новых возможностей",
+        hero_subtitle: "Разработчик игр · Unity · Mobile",
+        hero_tagline: "«Создаю масштабируемые и затягивающие мобильные игры — расту до Lead.»",
+        hero_cta_projects: "Смотреть проекты", hero_cta_contact: "Связаться",
+        about_kicker: "Обо мне", about_title: "Создаю игры, в которые хочется возвращаться",
+        about_p1: "Я разработчик игр с более чем 2-летним профессиональным опытом создания мобильных игр Hybrid Casual на Unity и C#. Я сосредоточен на простых, затягивающих и масштабируемых механиках.",
+        about_p2: "Мне важен весь жизненный цикл продукта — от прототипирования геймплея и создания CPI-маркетинговых видео до оптимизации производительности и публикации на Android и iOS. Я тесно работаю с дизайнерами, художниками и маркетинговыми командами и расту до роли Lead.",
+        about_stat1_num: "2+ года", about_stat1_label: "Профессиональный опыт", about_stat2_label: "Выпущенные игры (Android + iOS)", about_stat3_label: "Программа акселерации (CrazyLabs)",
+        skills_kicker: "Навыки", skills_title: "Инструменты и технологии, которые я использую",
+        skill_patterns: "Паттерны проектирования", skill_dsa: "Структуры данных и алгоритмы", skill_ai: "Программирование с помощью ИИ (Claude)", skill_opt: "Оптимизация для мобильных (FPS, память, время загрузки)", skill_trouble: "Поиск и решение проблем", skill_deploy: "Публикация на Android и iOS",
+        exp_kicker: "Опыт", exp_title: "Где я работал", exp_role: "Разработчик игр", exp_present: "Сейчас",
+        exp_imba_li1: "Разработка и оптимизация игровых механик для мобильных игр Hybrid Casual",
+        exp_imba_li2: "Самостоятельная съёмка и производство CPI-маркетинговых видео для прототипов игр",
+        exp_imba_li3: "Проектирование и реализация ключевых механик: простые, затягивающие, масштабируемые",
+        exp_imba_li4: "Сборка и публикация для Android и iOS",
+        exp_imba_li5: "Оптимизация производительности: FPS, использование памяти, время загрузки",
+        exp_imba_li6: "Сотрудничество с гейм-дизайнерами, художниками и маркетинговыми командами",
+        exp_crazy_li1: "Участие в программе акселерации продуктов",
+        exp_crazy_li2: "Фокус: разработка и тестирование игровых продуктов Hybrid Casual",
+        proj_kicker: "Проекты", proj_title: "Избранные работы",
+        proj_state_desc: "Экшен-игра в жанре tower defense, где вы защищаете движущийся поезд от непрерывных волн врагов. Я создал основные игровые механики, поведение ИИ врагов и боевые системы — оптимизировал под мобильные устройства и спроектировал масштабируемые системы для будущего контента.",
+        proj_link: "Смотреть на AppMagic",
+        edu_kicker: "Образование", edu_title: "Академическое образование", edu_meta: "Информационные технологии · 2020 – 2024",
+        edu_desc: "Участвовал в академических конкурсах и хакатонах, оттачивая навыки решения задач и применяя основы программной инженерии к реальным задачам с ограничением по времени.",
+        contact_kicker: "Контакты", contact_title: "Давайте создадим что-то вместе",
+        contact_lead: "Открыт для новых возможностей и сотрудничества. Свяжитесь со мной любым из способов ниже.",
+        contact_email_label: "Эл. почта", contact_phone_label: "Телефон", contact_download: "Скачать резюме",
+        footer_suffix: "· Сделано на чистом HTML, CSS и JS"
+      }
+    };
+
+    const langSwitch  = document.getElementById('langSwitch');
+    const langBtn     = document.getElementById('langBtn');
+    const langMenu    = document.getElementById('langMenu');
+    const langCurrent = document.getElementById('langCurrent');
+
+    // Build language menu
+    LANGS.forEach(l => {
+      const b = document.createElement('button');
+      b.dataset.lang = l.code;
+      b.innerHTML = '<span class="flag">' + l.flag + '</span> ' + l.name;
+      b.addEventListener('click', () => { applyLang(l.code); langSwitch.classList.remove('open'); });
+      langMenu.appendChild(b);
+    });
+
+    function applyLang(code) {
+      const t = I18N[code] || I18N.en;
+      document.documentElement.lang = code;
+      document.title = t.meta_title;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      const meta = LANGS.find(x => x.code === code) || LANGS[0];
+      langCurrent.textContent = code.toUpperCase();
+      langMenu.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.lang === code));
+      try { localStorage.setItem('lang', code); } catch (e) {}
+    }
+
+    langBtn.addEventListener('click', (e) => { e.stopPropagation(); langSwitch.classList.toggle('open'); });
+    document.addEventListener('click', (e) => { if (!langSwitch.contains(e.target)) langSwitch.classList.remove('open'); });
+
+    // Initial language: saved > browser > en
+    (function initLang() {
+      let saved = null;
+      try { saved = localStorage.getItem('lang'); } catch (e) {}
+      const browser = (navigator.language || 'en').slice(0, 2).toLowerCase();
+      const initial = (saved && I18N[saved]) ? saved : (I18N[browser] ? browser : 'en');
+      applyLang(initial);
+    })();
+
+    /* ============ Lucide icons ============ */
     lucide.createIcons();
 
-    /* ---------- Year ---------- */
+    /* ============ Year ============ */
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    /* ---------- Navbar scroll state ---------- */
+    /* ============ Navbar scroll state ============ */
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 20);
     });
 
-    /* ---------- Mobile menu ---------- */
+    /* ============ Mobile menu ============ */
     const hamburger = document.getElementById('hamburger');
     const navLinks  = document.getElementById('navLinks');
     const overlay   = document.getElementById('navOverlay');
@@ -637,7 +1057,7 @@
     overlay.addEventListener('click', () => toggleMenu(false));
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
 
-    /* ---------- Scroll reveal ---------- */
+    /* ============ Scroll reveal ============ */
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -648,7 +1068,7 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    /* ---------- Active nav link on scroll ---------- */
+    /* ============ Active nav link on scroll ============ */
     const sections = document.querySelectorAll('section[id]');
     const navAnchors = navLinks.querySelectorAll('a');
     const spyObserver = new IntersectionObserver((entries) => {
@@ -661,7 +1081,7 @@
     }, { rootMargin: '-45% 0px -50% 0px' });
     sections.forEach(s => spyObserver.observe(s));
 
-    /* ---------- Avatar: use assets/avatar.jpg if present ---------- */
+    /* ============ Avatar: use assets/avatar.jpg if present ============ */
     (function loadAvatar() {
       const img = new Image();
       img.src = 'assets/avatar.jpg';
@@ -676,7 +1096,7 @@
       };
     })();
 
-    /* ---------- Particle background ---------- */
+    /* ============ Particle background ============ */
     (function particles() {
       const canvas = document.getElementById('particles');
       const ctx = canvas.getContext('2d');
@@ -712,7 +1132,6 @@
           ctx.fillStyle = 'rgba(168,85,247,0.55)';
           ctx.fill();
 
-          // connecting lines
           for (let j = i + 1; j < dots.length; j++) {
             const d2 = dots[j];
             const dist = Math.hypot(d.x - d2.x, d.y - d2.y);
