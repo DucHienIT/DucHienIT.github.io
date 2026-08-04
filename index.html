@@ -306,11 +306,19 @@
       box-shadow: 0 14px 40px rgba(124,58,237,0.2);
     }
     .project-card .pj-icon {
-      width: 48px; height: 48px; border-radius: 12px;
+      width: 64px; height: 64px; border-radius: 14px; overflow: hidden;
       background: rgba(124,58,237,0.12); border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+      flex-shrink: 0;
     }
     .project-card .pj-icon i { color: var(--accent-glow); width: 24px; height: 24px; }
+    .project-card .pj-icon img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    /* when the artwork loads, hide the lucide fallback that follows it */
+    .project-card .pj-icon img ~ * { display: none; }
+    .project-card:hover .pj-icon img { transform: scale(1.06); }
+    .project-card .pj-icon img { transition: transform .3s ease; }
     .project-card .pj-date {
       font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);
       margin-bottom: 8px;
@@ -323,11 +331,14 @@
       background: var(--bg-primary); border: 1px solid var(--border);
       padding: 4px 10px; border-radius: 6px;
     }
+    .pj-links { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: auto; }
     .pj-link {
       display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
       color: var(--accent-glow); font-weight: 600; font-size: 0.9rem;
       transition: gap .2s ease;
     }
+    .pj-link.secondary { color: var(--text-secondary); }
+    .pj-link.secondary:hover { color: var(--text-primary); }
     .pj-link:hover { gap: 10px; }
     .pj-link i { width: 16px; height: 16px; }
 
@@ -583,10 +594,15 @@
             <span class="pj-tag">Enemy AI</span>
             <span class="pj-tag">Mobile</span>
           </div>
-          <a class="pj-link" href="https://appmagic.rocks/iphone/state-protector/6749788490" target="_blank" rel="noopener"><span data-i18n="proj_link">View on AppMagic</span> <i data-lucide="arrow-right"></i></a>
+          <div class="pj-links">
+            <a class="pj-link" href="https://appmagic.rocks/iphone/state-protector/6749788490" target="_blank" rel="noopener"><span data-i18n="proj_link">View on AppMagic</span> <i data-lucide="arrow-right"></i></a>
+          </div>
         </div>
         <div class="project-card reveal">
-          <div class="pj-icon"><i data-lucide="boxes"></i></div>
+          <div class="pj-icon">
+            <img src="assets/icons/cube-land.jpg" alt="Cube Land icon" loading="lazy" onerror="this.remove()">
+            <i data-lucide="boxes"></i>
+          </div>
           <div class="pj-date">July 2026</div>
           <h3>Cube Land</h3>
           <p data-i18n="proj_cube_land_desc">A recent Unity 6 casual game prototype built with URP, the new Input System, stylized rendering, and a mobile-ready project structure.</p>
@@ -596,23 +612,35 @@
             <span class="pj-tag">URP</span>
             <span class="pj-tag">Casual</span>
           </div>
-          <a class="pj-link" href="https://cube-cannon.netlify.app/" target="_blank" rel="noopener"><span data-i18n="proj_play_link">Play Game</span> <i data-lucide="arrow-right"></i></a>
+          <div class="pj-links">
+            <a class="pj-link" href="https://cube-cannon.netlify.app/" target="_blank" rel="noopener"><span data-i18n="proj_play_link">Play Game</span> <i data-lucide="arrow-right"></i></a>
+            <a class="pj-link secondary" href="https://github.com/DucHienIT/Cube-land" target="_blank" rel="noopener"><i data-lucide="github"></i> <span data-i18n="proj_github_link">View on GitHub</span></a>
+          </div>
         </div>
         <div class="project-card reveal">
-          <div class="pj-icon"><i data-lucide="circle-dot"></i></div>
-          <div class="pj-date">July 2026</div>
-          <h3>Marble Sort Container</h3>
-          <p data-i18n="proj_marble_desc">A mobile sorting-puzzle project focused on clear interactions, satisfying visual feedback, and an extensible level-based gameplay foundation.</p>
+          <div class="pj-icon">
+            <img src="assets/icons/sweepy-snake.jpg" alt="Sweepy Snake icon" loading="lazy" onerror="this.remove()">
+            <i data-lucide="worm"></i>
+          </div>
+          <div class="pj-date">August 2026</div>
+          <h3>Sweepy Snake</h3>
+          <p data-i18n="proj_sweepy_desc">A snake-inspired arcade game built around tight one-thumb controls, an escalating pace as the snake grows, and a lightweight mobile-first structure.</p>
           <div class="pj-tags">
             <span class="pj-tag">Unity 6</span>
             <span class="pj-tag">C#</span>
-            <span class="pj-tag">Puzzle</span>
+            <span class="pj-tag">Arcade</span>
             <span class="pj-tag">Mobile</span>
           </div>
-          <a class="pj-link" href="https://github.com/DucHienIT/Marble-Sort-Container" target="_blank" rel="noopener"><span data-i18n="proj_github_link">View on GitHub</span> <i data-lucide="arrow-right"></i></a>
+          <div class="pj-links">
+            <a class="pj-link" href="https://sweepy-snake.netlify.app/" target="_blank" rel="noopener"><span data-i18n="proj_play_link">Play Game</span> <i data-lucide="arrow-right"></i></a>
+            <a class="pj-link secondary" href="https://github.com/DucHienIT/Sweepy-Snake" target="_blank" rel="noopener"><i data-lucide="github"></i> <span data-i18n="proj_github_link">View on GitHub</span></a>
+          </div>
         </div>
         <div class="project-card reveal">
-          <div class="pj-icon"><i data-lucide="brick-wall"></i></div>
+          <div class="pj-icon">
+            <img src="assets/icons/cube-crumble.jpg" alt="Cube Crumble icon" loading="lazy" onerror="this.remove()">
+            <i data-lucide="brick-wall"></i>
+          </div>
           <div class="pj-date">July 2026</div>
           <h3>Cube Crumble</h3>
           <p data-i18n="proj_crumble_desc">A level-based 3D puzzle game with cube-shape gameplay, ball interactions, progression saving, level selection, and polished UI flows.</p>
@@ -622,10 +650,16 @@
             <span class="pj-tag">3D Puzzle</span>
             <span class="pj-tag">Save System</span>
           </div>
-          <a class="pj-link" href="https://github.com/DucHienIT/cube-crumble" target="_blank" rel="noopener"><span data-i18n="proj_github_link">View on GitHub</span> <i data-lucide="arrow-right"></i></a>
+          <div class="pj-links">
+            <a class="pj-link" href="https://cube-crumble.netlify.app/" target="_blank" rel="noopener"><span data-i18n="proj_play_link">Play Game</span> <i data-lucide="arrow-right"></i></a>
+            <a class="pj-link secondary" href="https://github.com/DucHienIT/cube-crumble" target="_blank" rel="noopener"><i data-lucide="github"></i> <span data-i18n="proj_github_link">View on GitHub</span></a>
+          </div>
         </div>
         <div class="project-card reveal">
-          <div class="pj-icon"><i data-lucide="route"></i></div>
+          <div class="pj-icon">
+            <img src="assets/icons/city-connect.jpg" alt="City Connect icon" loading="lazy" onerror="this.remove()">
+            <i data-lucide="route"></i>
+          </div>
           <div class="pj-date">July 2026</div>
           <h3>City Connect: Color Puzzle</h3>
           <p data-i18n="proj_city_desc">A colorful casual puzzle prototype centered on connecting paths across a city-inspired board, built for quick and intuitive mobile play.</p>
@@ -635,7 +669,10 @@
             <span class="pj-tag">Color Puzzle</span>
             <span class="pj-tag">Casual</span>
           </div>
-          <a class="pj-link" href="https://city-connect-color.netlify.app/" target="_blank" rel="noopener"><span data-i18n="proj_play_link">Play Game</span> <i data-lucide="arrow-right"></i></a>
+          <div class="pj-links">
+            <a class="pj-link" href="https://city-connect-color.netlify.app/" target="_blank" rel="noopener"><span data-i18n="proj_play_link">Play Game</span> <i data-lucide="arrow-right"></i></a>
+            <a class="pj-link secondary" href="https://github.com/DucHienIT/city-connect-color-puzzle" target="_blank" rel="noopener"><i data-lucide="github"></i> <span data-i18n="proj_github_link">View on GitHub</span></a>
+          </div>
         </div>
       </div>
     </div>
@@ -750,7 +787,7 @@
         proj_github_link: "View on GitHub",
         proj_play_link: "Play Game",
         proj_cube_land_desc: "A recent Unity 6 casual game prototype built with URP, the new Input System, stylized rendering, and a mobile-ready project structure.",
-        proj_marble_desc: "A mobile sorting-puzzle project focused on clear interactions, satisfying visual feedback, and an extensible level-based gameplay foundation.",
+        proj_sweepy_desc: "A snake-inspired arcade game built around tight one-thumb controls, an escalating pace as the snake grows, and a lightweight mobile-first structure.",
         proj_crumble_desc: "A level-based 3D puzzle game with cube-shape gameplay, ball interactions, progression saving, level selection, and polished UI flows.",
         proj_city_desc: "A colorful casual puzzle prototype centered on connecting paths across a city-inspired board, built for quick and intuitive mobile play.",
         edu_kicker: "Education", edu_title: "Academic background", edu_meta: "Information Technology · 2020 – 2024",
@@ -788,7 +825,7 @@
         proj_github_link: "Xem trên GitHub",
         proj_play_link: "Chơi game",
         proj_cube_land_desc: "Prototype game casual mới được xây dựng bằng Unity 6, URP, Input System mới, phong cách đồ họa stylized và cấu trúc sẵn sàng cho mobile.",
-        proj_marble_desc: "Game giải đố sắp xếp trên mobile, tập trung vào thao tác rõ ràng, phản hồi hình ảnh thỏa mãn và nền tảng gameplay theo màn dễ mở rộng.",
+        proj_sweepy_desc: "Game arcade lấy cảm hứng từ rắn săn mồi, tập trung vào điều khiển một ngón mượt mà, nhịp độ tăng dần khi rắn dài ra và cấu trúc gọn nhẹ ưu tiên mobile.",
         proj_crumble_desc: "Game giải đố 3D theo màn với gameplay khối lập phương, tương tác bóng, lưu tiến trình, chọn màn và luồng giao diện hoàn chỉnh.",
         proj_city_desc: "Prototype game giải đố casual nhiều màu sắc, xoay quanh việc nối các đường trên bàn chơi phong cách thành phố, phù hợp với trải nghiệm mobile nhanh và trực quan.",
         edu_kicker: "Học vấn", edu_title: "Quá trình học tập", edu_meta: "Công nghệ thông tin · 2020 – 2024",
